@@ -3,6 +3,7 @@ package Animal;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Main {
     public static void main(String[] args) {
 
@@ -11,6 +12,8 @@ public class Main {
         Animal animal2 = new Dog("Oskar","2022-01-02","Roll");
         animals.add(animal1);
         animals.add(animal2);
+
+        Method.methods((ArrayList<Animal>) animals);
 
     }
     }

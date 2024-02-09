@@ -1,0 +1,144 @@
+sun@sun-linux:~$ cat > Pets
+Собака, Кошка, Хомяк
+sun@sun-linux:~$ cat > 'Pack animals'
+Лошади, верблюды, ослы
+sun@sun-linux:~$ cat Pets 'Pack animals' > 'Human Friends'
+sun@sun-linux:~$ ls 'Human Friends'
+'Human Friends'
+sun@sun-linux:~$ cat 'Human Friends'
+Собака, Кошка, Хомяк
+Лошади, верблюды, ослы
+
+sun@sun-linux:~$ mkdir newdr
+sun@sun-linux:~$ ls
+ cycles.sh   docker-compose.yml   Dockerfile.save   Downloads   gb     'Human Friends'   links   mydb       newdr  'Pack animals'   Pictures   shared   task1   Templates   testsc
+ Desktop     Dockerfile           Documents         file_new    Human   ip.rules         Music   myfolder   Pack    Pets            Public     snap     task2   test        Videos
+sun@sun-linux:~$ mv 'Human Friends' ./newdr
+sun@sun-linux:~$ ls
+ cycles.sh   docker-compose.yml   Dockerfile.save   Downloads   gb      ip.rules   Music   myfolder   Pack            Pets       Public   snap    task2       test     Videos
+ Desktop     Dockerfile           Documents         file_new    Human   links      mydb    newdr     'Pack animals'   Pictures   shared   task1   Templates   testsc
+sun@sun-linux:~$ 
+
+sun@sun-linux:~$ sudo apt update
+[sudo] password for sun: 
+Hit:1 http://ru.archive.ubuntu.com/ubuntu jammy InRelease
+Get:2 http://ru.archive.ubuntu.com/ubuntu jammy-updates InRelease [119 kB]                                                                                      
+Hit:3 http://ru.archive.ubuntu.com/ubuntu jammy-backports InRelease                                                                                                                              
+Hit:4 https://download.docker.com/linux/ubuntu jammy InRelease                                                                                                                        
+Get:5 https://download.onlyoffice.com/repo/debian squeeze InRelease [10,7 kB]                                                      
+Get:6 http://security.ubuntu.com/ubuntu jammy-security InRelease [110 kB]               
+Err:5 https://download.onlyoffice.com/repo/debian squeeze InRelease
+  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 8320CA65CB2DE8E5
+Reading package lists... Done      
+W: GPG error: https://download.onlyoffice.com/repo/debian squeeze InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 8320CA65CB2DE8E5
+E: The repository 'https://download.onlyoffice.com/repo/debian squeeze InRelease' is not signed.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+sun@sun-linux:~$ sudo apt install mysql-server mysql-client
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following package was automatically installed and is no longer required:
+  ubuntu-fan
+Use 'sudo apt autoremove' to remove it.
+The following NEW packages will be installed:
+  mysql-client mysql-server
+0 upgraded, 2 newly installed, 0 to remove and 132 not upgraded.
+Need to get 18,8 kB of archives.
+After this operation, 71,7 kB of additional disk space will be used.
+Get:1 http://ru.archive.ubuntu.com/ubuntu jammy-updates/main amd64 mysql-client all 8.0.35-0ubuntu0.22.04.1 [9 354 B]
+Get:2 http://ru.archive.ubuntu.com/ubuntu jammy-updates/main amd64 mysql-server all 8.0.35-0ubuntu0.22.04.1 [9 464 B]
+Fetched 18,8 kB in 0s (178 kB/s)
+Selecting previously unselected package mysql-client.
+(Reading database ... 190973 files and directories currently installed.)
+Preparing to unpack .../mysql-client_8.0.35-0ubuntu0.22.04.1_all.deb ...
+Unpacking mysql-client (8.0.35-0ubuntu0.22.04.1) ...
+Selecting previously unselected package mysql-server.
+Preparing to unpack .../mysql-server_8.0.35-0ubuntu0.22.04.1_all.deb ...
+Unpacking mysql-server (8.0.35-0ubuntu0.22.04.1) ...
+Setting up mysql-server (8.0.35-0ubuntu0.22.04.1) ...
+Setting up mysql-client (8.0.35-0ubuntu0.22.04.1) ...
+
+sun@sun-linux:~$ wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-j_8.0.32-1ubuntu22.04_all.deb
+--2024-01-29 21:05:22--  https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-j_8.0.32-1ubuntu22.04_all.deb
+Resolving dev.mysql.com (dev.mysql.com)... 23.52.29.249, 2a02:26f0:9500:98f::2e31, 2a02:26f0:9500:98d::2e31
+Connecting to dev.mysql.com (dev.mysql.com)|23.52.29.249|:443... connected.
+HTTP request sent, awaiting response... 302 Moved Temporarily
+Location: https://cdn.mysql.com//archives/mysql-connector-java-8.0/mysql-connector-j_8.0.32-1ubuntu22.04_all.deb [following]
+--2024-01-29 21:05:23--  https://cdn.mysql.com//archives/mysql-connector-java-8.0/mysql-connector-j_8.0.32-1ubuntu22.04_all.deb
+Resolving cdn.mysql.com (cdn.mysql.com)... 23.210.173.94, 2a02:26f0:9500:99f::1d68, 2a02:26f0:9500:987::1d68
+Connecting to cdn.mysql.com (cdn.mysql.com)|23.210.173.94|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 2429088 (2,3M) [application/x-debian-package]
+Saving to: ‘mysql-connector-j_8.0.32-1ubuntu22.04_all.deb’
+
+mysql-connector-j_8.0.32-1ubuntu22.04_all.deb      100%[===============================================================================================================>]   2,32M  8,63MB/s    in 0,3s    
+
+2024-01-29 21:05:23 (8,63 MB/s) - ‘mysql-connector-j_8.0.32-1ubuntu22.04_all.deb’ saved [2429088/2429088]
+
+sun@sun-linux:~$ sudo dpkg - i mysql-connector-j_8.0.32-1ubuntu22.04_all.deb
+dpkg: error: need an action option
+
+Type dpkg --help for help about installing and deinstalling packages [*];
+Use 'apt' or 'aptitude' for user-friendly package management;
+Type dpkg -Dhelp for a list of dpkg debug flag values;
+Type dpkg --force-help for a list of forcing options;
+Type dpkg-deb --help for help about manipulating *.deb files;
+
+Options marked [*] produce a lot of output - pipe it through 'less' or 'more' !
+sun@sun-linux:~$ sudo dpkg -i mysql-connector-j_8.0.32-1ubuntu22.04_all.deb
+Selecting previously unselected package mysql-connector-j.
+(Reading database ... 190977 files and directories currently installed.)
+Preparing to unpack mysql-connector-j_8.0.32-1ubuntu22.04_all.deb ...
+Unpacking mysql-connector-j (8.0.32-1ubuntu22.04) ...
+Setting up mysql-connector-j (8.0.32-1ubuntu22.04) ...
+sun@sun-linux:~$ sudo dpkg -r mysql-connector-j
+(Reading database ... 190986 files and directories currently installed.)
+Removing mysql-connector-j (8.0.32-1ubuntu22.04) ...
+sun@sun-linux:~$ sudo apt-get autoremove
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following packages will be REMOVED:
+  ubuntu-fan
+0 upgraded, 0 newly installed, 1 to remove and 132 not upgraded.
+After this operation, 150 kB disk space will be freed.
+Do you want to continue? [Y/n] y
+(Reading database ... 190977 files and directories currently installed.)
+Removing ubuntu-fan (0.12.16) ...
+ubuntu-fan: removing default /etc/network/fan configuration
+Processing triggers for man-db (2.10.2-1) ...
+
+
+sun@sun-linux:~$ history
+480  cat Pets
+  481  clear
+  482  cat x
+  483  clear
+  484  cat > Pets
+  485  cat > Pack animals
+  486  cat > 'Pack animals'
+  487  cat Pets 'Pack animals' > Human Friends
+  488  cat Pets Pack animals > Human Friends
+  489  cat Pets 'Pack animals' > 'Human Friends'
+  490  ls 'Human Friends'
+  491  cat 'Human Friends'
+  492  clear
+  493  mkdir newdr
+  494  ls
+  495  mv 'Human Friends' ../newdr
+  496  mv 'Human Friends' ./newdr
+  497  ls
+  498  clear
+  499  sudo apt update
+  500  sudo apt install mysql-server mysql-client
+  501  clear
+  502  wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-j_8.0.32-1ubuntu22.04_all.deb
+  503  sudo dpkg - i mysql-connector-j_8.0.32-1ubuntu22.04_all.deb
+  504  sudo dpkg -i mysql-connector-j_8.0.32-1ubuntu22.04_all.deb
+  505  sudo dpkg -r mysql-connector-j
+  506  sudo apt-get autoremove
+  507  clear
+  508  history
+
+

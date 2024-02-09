@@ -1,0 +1,246 @@
+sudo mysql
+[sudo] password for sun: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.35-0ubuntu0.22.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+DROP DATABASE IF EXISTS human_friends;
+CREATE DATABASE human_friends;
+
+USE human_friends;
+
+CREATE TABLE animals (
+	id INT AUTO_INCREMENT PRIMARY KEY, 
+	class_name VARCHAR(20)
+);
+
+INSERT INTO
+	animals (class_name)
+VALUES 
+	('Pack_animals'),
+	('Pets');  
+
+CREATE TABLE pack_animals (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    subclass_name VARCHAR (20),
+    class_id INT,
+    FOREIGN KEY (class_id) REFERENCES animals (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO 
+	pack_animals (subclass_name, class_id)
+VALUES
+	('Horses', 1),
+	('Donkeys', 1),  
+	('Camels', 1); 
+    
+CREATE TABLE pets (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    subclass_name VARCHAR (20),
+    class_id INT,
+    FOREIGN KEY (class_id) REFERENCES animals (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO 
+	pets (subclass_name, class_id)
+VALUES 
+	('Cats', 2),
+	('Dogs', 2),  
+	('Hamsters', 2); 
+
+CREATE TABLE cats (       
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    name VARCHAR(20), 
+    type_id INT, 
+    birthday DATE,
+    commands VARCHAR(50),
+    Foreign KEY (type_id) REFERENCES pets (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE dogs (       
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    name VARCHAR(20), 
+    type_id INT, 
+    birthday DATE,
+    commands VARCHAR(50),
+    Foreign KEY (type_id) REFERENCES pets (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE hamsters (       
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    name VARCHAR(20), 
+    type_id INT, 
+    birthday DATE,
+    commands VARCHAR(50),
+    Foreign KEY (type_id) REFERENCES pets (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE horses (       
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    name VARCHAR(20), 
+    type_id INT, 
+    birthday DATE,
+    commands VARCHAR(50),
+    Foreign KEY (type_id) REFERENCES pack_animals (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE donkeys (       
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    name VARCHAR(20), 
+    type_id INT, 
+    birthday DATE,
+    commands VARCHAR(50),
+    Foreign KEY (type_id) REFERENCES pack_animals (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE camels (       
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    name VARCHAR(20), 
+    type_id INT, 
+    birthday DATE,
+    commands VARCHAR(50),
+    Foreign KEY (type_id) REFERENCES pack_animals (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+INSERT INTO 
+	cats (name, type_id, birthday, commands)
+VALUES 
+	('Barsik', 1, '2023-05-25', 'Sit, Meow'),
+	('Kotik', 1, '2021-04-20', 'Sit, Jump, Meow'),  
+	('Pushok', 1, '2022-04-30', 'Meow, Eat, Jump'); 
+
+INSERT INTO 
+	dogs (name, type_id, birthday, commands)
+VALUES 
+	('Oskar', 2, '2022-01-02', 'Sit, Roll, Run'),
+	('Nelly', 2, '2013-01-15', 'Run, Eat, Hide'),  
+	('Bim', 2, '2011-11-13', 'Sit, Stay, Eat'); 
+
+INSERT INTO 
+	hamsters (name, type_id, birthday, commands)
+VALUES 
+	('Irene', 3, '2023-02-05', 'Sleep, Eat'),
+	('Agata', 3, '2022-04-16', 'Eat, Hide'),
+	('Holmik', 3, '2023-03-04', 'Sleep, Spin'); 
+
+INSERT INTO 
+	horses (name, type_id, birthday, commands)
+VALUES 
+	('Wind', 1, '2022-04-12', 'Run, Jump, Gallop'),
+	('Honey', 1, '2021-01-25', 'Gallop, Eat'),  
+	('Roonee', 1, '2023-10-29', 'Eat, Jump, Sleep'); 
+
+INSERT INTO 
+	donkeys (name, type_id, birthday, commands)
+VALUES 
+	('May', 2, '2023-04-12', 'Eat, Laught, Jump'),
+	('May', 2, '2022-09-54', 'Jump, Eat, Kick'), 
+	('Sun', 2, '2019-01-23', 'Sit, Eat, Hide'); 
+
+INSERT INTO 
+	camels (name, type_id, birthday, commands)
+VALUES 
+	('Sand', 3, '2021-01-23', 'Sit, Walk'),
+	('Persik', 3, '2022-09-11', 'Walk, Drink, Eat'), 
+	('Sundy', 3, '2023-03-17', 'Walk, Hide, Carry'); 
+
+DELETE FROM camels;
+
+CREATE TABLE horses_and_donkeys 
+SELECT * FROM horses
+	UNION 
+SELECT * FROM donkeys;
+
+DROP TABLE IF EXISTS temp_animals;
+CREATE TEMPORARY TABLE temp_animals AS
+SELECT * FROM cats
+UNION
+SELECT * FROM dogs
+UNION
+SELECT * FROM hamsters
+UNION
+SELECT * FROM horses
+UNION
+SELECT * FROM donkeys
+UNION
+SELECT * FROM camels;
+
+DROP TABLE IF EXISTS young_animals;
+CREATE TABLE young_animals
+SELECT
+	name, type_id, birthday, commands, TIMESTAMPDIFF(MONTH, birthday, CURDATE()) AS age_in_month
+FROM 
+	temp_animals
+WHERE birthday BETWEEN ADDDATE(CURDATE(), INTERVAL -3 YEAR) AND ADDDATE(CURDATE(), INTERVAL -1 YEAR);
+
+DROP TABLE IF EXISTS all_animals;
+CREATE TABLE all_animals
+
+SELECT 
+	dg.name,
+	p.subclass_name, 
+	dg.birthday, 
+	dg.commands,
+	a.class_name
+FROM dogs dg
+LEFT JOIN pets p ON p.id = dg.type_id
+LEFT JOIN animals a ON a.id = p.class_id
+UNION
+SELECT 
+	ct.name,
+	p.subclass_name, 
+	ct.birthday, 
+	ct.commands,
+	a.class_name
+FROM cats ct
+LEFT JOIN pets p ON p.id = ct.type_id
+LEFT JOIN animals a ON a.id = p.class_id
+UNION
+SELECT 
+	hm.name,
+	p.subclass_name, 
+	hm.birthday, 
+	hm.commands,
+	a.class_name
+FROM hamsters hm
+LEFT JOIN pets p ON p.id = hm.type_id
+LEFT JOIN animals a ON a.id = p.class_id
+UNION
+SELECT 
+	hr.name,
+	pa.subclass_name, 
+	hr.birthday, 
+	hr.commands,
+	a.class_name
+FROM horses hr
+LEFT JOIN pack_animals pa ON pa.id = hr.type_id
+LEFT JOIN animals a ON a.id = pa.class_id
+UNION
+SELECT 
+	dk.name,
+	pa.subclass_name, 
+	dk.birthday, 
+	dk.commands,
+	a.class_name
+FROM donkeys dk
+LEFT JOIN pack_animals pa ON pa.id = dk.type_id
+LEFT JOIN animals a ON a.id = pa.class_id
+UNION
+SELECT 
+	cm.name,
+	pa.subclass_name, 
+	cm.birthday, 
+	cm.commands,
+	a.class_name
+FROM camels cm
+LEFT JOIN pack_animals pa ON pa.id = cm.type_id
+LEFT JOIN animals a ON a.id = pa.class_id

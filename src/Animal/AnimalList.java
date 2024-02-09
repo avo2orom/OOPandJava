@@ -1,12 +1,4 @@
-import Animal.Animal;
-import Animal.Cat;
-import Animal.Donkey;
-import Animal.Dog;
-import Animal.Hamster;
-import Animal.Horse;
-import Animal.Camel;
-import Animal.Pet;
-import Animal.PackAnimal;
+package Animal;
 
 import java.util.ArrayList;
 import java.util.Scanner;

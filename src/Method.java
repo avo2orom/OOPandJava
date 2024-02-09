@@ -1,6 +1,9 @@
 
+package Animal;
+
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Method {
 
@@ -13,7 +16,7 @@ public class Method {
     }
 
     public static void methods(ArrayList<Animal> animals) {
-        Methods.listOfActions();
+        Method.listOfActions();
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
 
@@ -33,6 +36,8 @@ public class Method {
         }
         else System.out.println("Неверный ввод");
     }
+
+
 
 
 
